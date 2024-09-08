@@ -43,6 +43,7 @@ To implement this functionality, we need to capture additional details such as f
 - `email`
 - `phone`
 - `user_type` (Enum: Franchisor, Buyer)
+- `is_otp_verified`
 - `created_at`
 - `updated_at`
 
@@ -68,48 +69,63 @@ To implement this functionality, we need to capture additional details such as f
 - `category_id` :  f.k referencing category
 - `sub_category_id` : f.k referencing sub category
 - `service_id` : f.k referencing service
-- `meta_data` (for storing requirements)
+- `meta_data` (JSON field for storing requirements)
 - `questions` (JSON field for questions the owner wants the buyer to answer)
 - `created_at`
 - `updated_at`
 
-
-## TODO -> design schema for profile completion 
 ## 3. **Buyer Table**
 - `buyer_id` (Primary Key)
 - `user_id` (Foreign Key referencing Users)  
 - `name`
 - `contact_email`
 - `contact_phone`
+- `date_of_birth`
+- `address`
+- `country`
+- `state`
+- `city`
+- `pincode`
+- `meta_data` : (JSON field for storing requirements)
 - `created_at`
 - `updated_at`
 
 
-## TODO -> design schema for requesting interest
 ## 4. **Interest Request Table** (Captures buyer interest and their response to franchisor requirements)
 - `interest_id` (Primary Key)
 - `buyer_id` (Foreign Key referencing Buyer)
 - `franchisor_id` (Foreign Key referencing Franchisor)
-- `investment_budget` (Buyer's input about their budget)
-- `responses` (JSON field for buyer's answers to the questions asked by the franchise owner)
+- `responses` (JSON field for buyer's answers to the questions asked by the franchise owner, investment budget)
 - `submitted_at`
-- `status` (Enum: Pending, Approved, Rejected)
+- `approval_status` (Enum: Pending, Approved, Rejected)
 
 
 ## 5. **Category Table** or **Industry Table**  (One Category/Industry can have many multiple subcategory)
 - `category_id`
 - `category_name`
+- `created_at`
+- `updated_at`
 
 ## 6. **Sub Category Table** or **Sub Industry Table**  (Many SubCategory/Industry can have one category)
 - `sub_category_id`
 - `category_id`
 - `sub_category_name`
+- `created_at`
+- `updated_at`
 
 ## 7. **Service/Product Table** (Many Service/Product can have one Subcategory)
 - `service_id`
 - `sub_category_id`
 - `service_name`
+- `created_at`
+- `updated_at`
 
-
-## TODO -> design otp verification schema 
+## TTL (Time-to-Live) for OTPs: automate the deletion of expired OTPs using TTL (Time-to-Live) features in your database, which will automatically remove expired entries to keep the table clean.
 ## 8. **OTP Table**
+- `otp_id`
+- `user_id`
+- `otp_code`
+- `is_used`
+- `expires_at`	
+- `created_at`	
+- `updated_at`
